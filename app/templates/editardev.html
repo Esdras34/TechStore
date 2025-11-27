@@ -1,0 +1,10 @@
+{% extends "template.html" %}
+{% block titulo %}Editar Desenvolvedor{% endblock titulo %}
+{% block conteudo %}
+    <h1>Editar Desenvolvedor</h1>
+    <form method="post"> {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Salvar alterações">
+        
+    </form>
+{% endblock conteudo %}

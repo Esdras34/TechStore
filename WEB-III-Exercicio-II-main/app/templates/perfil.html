@@ -1,0 +1,38 @@
+{% extends "template.html" %}
+{% block titulo %}Meu Perfil{% endblock titulo %}
+
+{% block conteudo %}
+<section class="perfil-section">
+    <div class="perfil-container">
+        <h1>Olá, {{ user.first_name|default:user.username }}!</h1>
+        <p>Aqui está o histórico dos seus pedidos.</p>
+
+        {% if pedidos %}
+            <table class="tabela-pedidos">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Produto</th>
+                        <th>Quantidade</th>
+                        <th>Total</th>
+                        <th>Data</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pedido in pedidos %}
+                        <tr>
+                            <td>{{ pedido.id }}</td>
+                            <td>{{ pedido.produto.nome }}</td>
+                            <td>{{ pedido.quantidade }}</td>
+                            <td>R$ {{ pedido.total }}</td>
+                            <td>{{ pedido.data|date:"d/m/Y H:i" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Você ainda não realizou nenhum pedido.</p>
+        {% endif %}
+    </div>
+</section>
+{% endblock conteudo %}

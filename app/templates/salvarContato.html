@@ -1,0 +1,52 @@
+{% extends "template.html" %}
+
+{% block titulo %}Enviar Mensagem{% endblock titulo %}
+
+{% block conteudo %}
+    <section class="form-section">
+        <div class="form-container">
+            <h1>Enviar Mensagem</h1>
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            <form action="{% url 'salvarContato' %}" method="post" class="contact-form">
+                {% csrf_token %}
+                <div class="form-group {% if form.nome.errors %}has-error{% endif %}">
+                    <label for="{{ form.nome.id_for_label }}">Nome:</label>
+                    {{ form.nome }}
+                    {% if form.nome.errors %}
+                        <span class="error">{{ form.nome.errors }}</span>
+                    {% endif %}
+                </div>
+                <div class="form-group {% if form.email.errors %}has-error{% endif %}">
+                    <label for="{{ form.email.id_for_label }}">E-mail:</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <span class="error">{{ form.email.errors }}</span>
+                    {% endif %}
+                </div>
+                <div class="form-group {% if form.mensagem.errors %}has-error{% endif %}">
+                    <label for="{{ form.mensagem.id_for_label }}">Mensagem:</label>
+                    {{ form.mensagem }}
+                    {% if form.mensagem.errors %}
+                        <span class="error">{{ form.mensagem.errors }}</span>
+                    {% endif %}
+                </div>
+                
+                {% if form.non_field_errors %}
+                    <div class="error-message">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+                
+                <button type="submit" class="btn-primary">Enviar Mensagem</button>
+            </form>
+        </div>
+    </section>
+{% endblock conteudo %}

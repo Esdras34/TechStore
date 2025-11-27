@@ -1,0 +1,64 @@
+{% extends "template.html" %}
+{% load static %}
+{% block titulo %}Comprar{% endblock titulo %}
+{% block conteudo %}
+
+<section class="comprar-section">
+    <div class="comprar-container">
+        <div class="produto-detalhes">
+            {% if produto.foto %}
+                <div class="produto-foto-grande">
+                    <img src="{{ produto.foto.url }}" alt="{{ produto.nome }}">
+                </div>
+            {% else %}
+                <div class="produto-foto-grande">
+                    <img src="{% static 'images/images.png' %}" alt="{{ produto.nome }}">
+                </div>
+            {% endif %}
+            <div class="produto-info-detalhes">
+                <h1>{{ produto.nome }}</h1>
+                <p class="produto-descricao-completa">{{ produto.descricao }}</p>
+                <div class="preco-destaque">
+                    <span class="preco-label">Preço:</span>
+                    <span class="preco-valor">R$ {{ produto.preco|floatformat:2 }}</span>
+                </div>
+                <div class="estoque-info">
+                    <span>Estoque disponível: <strong>{{ produto.estoque }}</strong> unidades</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-compra">
+            <h2>Confirmar Compra</h2>
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            <form method="POST" class="compra-form">
+                {% csrf_token %}
+                <div class="form-group {% if form.quantidade.errors %}has-error{% endif %}">
+                    <label for="{{ form.quantidade.id_for_label }}">Quantidade:</label>
+                    {{ form.quantidade }}
+                    {% if form.quantidade.errors %}
+                        <span class="error">{{ form.quantidade.errors }}</span>
+                    {% endif %}
+                </div>
+                
+                {% if form.non_field_errors %}
+                    <div class="error-message">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+                
+                <button type="submit" class="btn-primary">Confirmar Compra</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+{% endblock conteudo %}

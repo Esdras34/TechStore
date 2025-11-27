@@ -1,0 +1,39 @@
+{% extends "template.html" %}
+{% load static %}
+
+{% block titulo %}Produtos{% endblock titulo %}
+
+{% block conteudo %}
+    <section class="produtos-section">
+        <h1 class="section-title">Nossos Produtos</h1>
+        <div class="produtos-grid">
+            {% for p in prods %}
+                <div class="produto-card">
+                    {% if p.foto %}
+                        <div class="produto-imagem">
+                            <img src="{{ p.foto.url }}" alt="{{ p.nome }}">
+                        </div>
+                    {% else %}
+                        <div class="produto-imagem">
+                            <img src="{% static 'images/images.png' %}" alt="{{ p.nome }}">
+                        </div>
+                    {% endif %}
+                    <div class="produto-info">
+                        <h3>{{ p.nome }}</h3>
+                        <p class="produto-descricao">{{ p.descricao|truncatewords:20 }}</p>
+                        {% if p.categoria %}
+                            <span class="produto-categoria">{{ p.categoria }}</span>
+                        {% endif %}
+                        <div class="produto-preco">
+                            <span class="preco">R$ {{ p.preco|floatformat:2 }}</span>
+                            <span class="estoque">Estoque: {{ p.estoque }}</span>
+                        </div>
+                        <a href="{% url 'comprar' p.id %}" class="btn-comprar">Comprar</a>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="no-products">Nenhum produto disponível no momento.</p>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock conteudo %}

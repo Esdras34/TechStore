@@ -1,0 +1,14 @@
+{% extends "template.html" %}
+
+{% block titulo %}NovoProduto{% endblock titulo %}
+
+{% block conteudo %}
+    <h1>Novo Produto</h1>
+    <form action="{% url 'salvarProduto' %}" method="post" enctype='multipart/form-data'> 
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit">
+        
+    
+    </form>
+{% endblock conteudo %}

@@ -1,0 +1,13 @@
+{% extends "template.html" %}
+
+{% block titulo %}Cadastrar Desenvolvedor{% endblock titulo %}
+
+{% block conteudo %}
+    <h1>Cadastrar Desenvolvedor</h1>
+    <form action="{% url 'salvarDev' %}" method="post"> {% csrf_token %}
+        {{ form }}
+        <input type="submit">
+        
+    
+    </form>
+{% endblock conteudo %}

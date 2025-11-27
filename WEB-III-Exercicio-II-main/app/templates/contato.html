@@ -1,0 +1,45 @@
+{% extends "template.html" %}
+{% block titulo %}Contato{% endblock titulo %}
+{% block conteudo %}
+    <section class="contato-section">
+        <div class="contato-container">
+            <div class="contato-info">
+                <h1>Entre em Contato</h1>
+                {% if pagina %}
+                    <div class="info-item">
+                        <strong>Endereço:</strong>
+                        <p>{{ pagina.endereco }}</p>
+                    </div>
+                    <div class="info-item">
+                        <strong>E-mail:</strong>
+                        <p><a href="mailto:{{ pagina.email }}">{{ pagina.email }}</a></p>
+                    </div>
+                    <div class="info-item">
+                        <strong>WhatsApp:</strong>
+                        <p><a href="https://wa.me/{{ pagina.whatsapp }}" target="_blank">{{ pagina.whatsapp }}</a></p>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="contato-form">
+                <h2>Enviar Mensagem</h2>
+                <a href="{% url 'salvarContato' %}" class="btn-primary">Enviar Mensagem</a>
+            </div>
+        </div>
+
+        {% if contatos %}
+            <div class="mensagens-recebidas">
+                <h2>Mensagens Recebidas</h2>
+                {% for contato in contatos %}
+                    <div class="mensagem-card">
+                        <p><strong>Nome:</strong> {{ contato.nome }}</p>
+                        <p><strong>Email:</strong> {{ contato.email }}</p>
+                        <p><strong>Mensagem:</strong> {{ contato.mensagem }}</p>
+                        <p><strong>Data:</strong> {{ contato.criado_em|date:"d/m/Y H:i" }}</p>
+                        <a href="{% url 'excluirContato' contato.id %}" class="btn-danger">Excluir</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </section>
+{% endblock conteudo %}

@@ -1,0 +1,24 @@
+{% extends "template.html" %}
+
+{% block titulo %}Sobre{% endblock titulo %}
+
+{% block conteudo %}
+    <section class="sobre-section">
+        <div class="sobre-container">
+            {% if pagina %}
+                {% if pagina.imagem_sobre %}
+                    <div class="sobre-imagem">
+                        <img src="{{ pagina.imagem_sobre.url }}" alt="Sobre nós">
+                    </div>
+                {% endif %}
+                <div class="sobre-texto">
+                    <h1>Sobre Nós</h1>
+                    <p>{{ pagina.texto_sobre|linebreaks }}</p>
+                </div>
+            {% else %}
+                <h1>Quem Somos</h1>
+                <p>Informações sobre a empresa serão exibidas aqui.</p>
+            {% endif %}
+        </div>
+    </section>
+{% endblock conteudo %}

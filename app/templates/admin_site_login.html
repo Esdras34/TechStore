@@ -1,0 +1,44 @@
+{% extends "template.html" %}
+{% load static %}
+
+{% block titulo %}Login Administrativo{% endblock titulo %}
+
+{% block conteudo %}
+    <section class="login-section">
+        <div class="login-container">
+            <div class="login-box">
+                <h1>Área Administrativa</h1>
+                <p class="login-subtitle">Acesso restrito para administradores</p>
+                
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <form method="POST" class="login-form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="email">E-mail:</label>
+                        <input type="text" id="email" name="email" placeholder="reis@.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Senha:</label>
+                        <input type="password" id="password" name="password" required placeholder="Digite sua senha">
+                    </div>
+                    
+                    <button type="submit" class="btn-primary btn-login">Entrar</button>
+                </form>
+                
+                <div class="login-footer">
+                    <p><a href="{% url 'index' %}">Voltar para a página inicial</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock conteudo %}
+
+

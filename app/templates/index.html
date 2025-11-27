@@ -1,0 +1,540 @@
+{% extends "template.html" %}
+{% load static %}
+
+{% block titulo %}{% if pagina %}{{ pagina.nome_do_site }}{% else %}Home{% endif %}{% endblock titulo %}
+
+{% block conteudo %}
+    <!-- Carrossel de Imagens -->
+    {% if carousel_images %}
+    <section class="carousel-section">
+        <div class="carousel-container">
+            <div class="carousel-wrapper">
+                <div class="carousel-slides" id="carouselSlides">
+                    {% for image in carousel_images %}
+                    <div class="carousel-slide {% if forloop.first %}active{% endif %}">
+                        <img src="{{ image.imagem.url }}" alt="{{ image.titulo|default:'Imagem do carrossel' }}">
+                        {% if image.titulo or image.descricao %}
+                        <div class="carousel-caption">
+                            {% if image.titulo %}
+                            <h2>{{ image.titulo }}</h2>
+                            {% endif %}
+                            {% if image.descricao %}
+                            <p>{{ image.descricao }}</p>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% if carousel_images|length > 1 %}
+                <button class="carousel-btn carousel-prev" onclick="changeSlide(-1)">&#10094;</button>
+                <button class="carousel-btn carousel-next" onclick="changeSlide(1)">&#10095;</button>
+                <div class="carousel-indicators">
+                    {% for image in carousel_images %}
+                    <span class="indicator {% if forloop.first %}active{% endif %}" onclick="goToSlide({{ forloop.counter0 }})"></span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-container">
+            <div class="hero-content">
+                {% if pagina %}
+                    <div class="hero-text-content">
+                        <p class="hero-intro">{{ pagina.texto_chamada }}</p>
+                        
+                        <p class="hero-description">
+                            Aqui você encontra smartphones, notebooks, acessórios, smartwatches, fones, caixas de som, periféricos e muito mais, tudo selecionado com rigor para entregar a melhor experiência possível.
+                        </p>
+                        
+                        <div class="beneficios-lista">
+                            <h3 class="beneficios-titulo">Por que comprar conosco?</h3>
+                            <ul class="beneficios-items">
+                                <li>✓ Produtos 100% originais e com garantia</li>
+                                <li>✓ Preços competitivos e promoções exclusivas</li>
+                                <li>✓ Envio rápido para todo o Brasil</li>
+                                <li>✓ Atendimento humanizado e suporte especializado</li>
+                                <li>✓ Pagamentos seguros e diversas formas de pagamento</li>
+                            </ul>
+                        </div>
+                        
+                        <p class="hero-description">
+                            Tecnologia que transforma seu dia a dia. Acreditamos que a tecnologia deve facilitar sua vida. Por isso, oferecemos dispositivos modernos, de alta performance e com excelente custo-benefício — perfeitos para trabalho, estudos ou lazer. Explore nosso catálogo e descubra as melhores oportunidades para turbinar sua rotina com o que há de mais avançado no mundo dos eletrônicos.
+                        </p>
+                        
+                        <p class="hero-cta-text">Descubra os melhores produtos eletrônicos com tecnologia de ponta e os melhores preços do mercado.</p>
+                    </div>
+                    
+                    <div class="hero-buttons">
+                        <a href="{% url 'produtos' %}" class="btn-primary">Ver Produtos</a>
+                        <a href="{% url 'sobre' %}" class="btn-secondary">Saiba Mais</a>
+                    </div>
+                {% else %}
+                    <div class="hero-text-content">
+                        <p class="hero-intro">A melhor tecnologia, com o melhor preço. Bem-vindo à sua loja de eletrônicos, o lugar ideal para quem busca inovação, qualidade e segurança na hora de comprar.</p>
+                        
+                        <p class="hero-description">
+                            Aqui você encontra smartphones, notebooks, acessórios, smartwatches, fones, caixas de som, periféricos e muito mais, tudo selecionado com rigor para entregar a melhor experiência possível.
+                        </p>
+                        
+                        <div class="beneficios-lista">
+                            <h3 class="beneficios-titulo">Por que comprar conosco?</h3>
+                            <ul class="beneficios-items">
+                                <li>✓ Produtos 100% originais e com garantia</li>
+                                <li>✓ Preços competitivos e promoções exclusivas</li>
+                                <li>✓ Envio rápido para todo o Brasil</li>
+                                <li>✓ Atendimento humanizado e suporte especializado</li>
+                                <li>✓ Pagamentos seguros e diversas formas de pagamento</li>
+                            </ul>
+                        </div>
+                        
+                        <p class="hero-description">
+                            Tecnologia que transforma seu dia a dia. Acreditamos que a tecnologia deve facilitar sua vida. Por isso, oferecemos dispositivos modernos, de alta performance e com excelente custo-benefício — perfeitos para trabalho, estudos ou lazer. Explore nosso catálogo e descubra as melhores oportunidades para turbinar sua rotina com o que há de mais avançado no mundo dos eletrônicos.
+                        </p>
+                        
+                        <p class="hero-cta-text">Descubra os melhores produtos eletrônicos com tecnologia de ponta e os melhores preços do mercado.</p>
+                    </div>
+                    
+                    <div class="hero-buttons">
+                        <a href="{% url 'produtos' %}" class="btn-primary">Ver Produtos</a>
+                        <a href="{% url 'sobre' %}" class="btn-secondary">Saiba Mais</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Produtos em Destaque -->
+    {% if produtos_destaque %}
+    <section class="destaque-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Produtos em Destaque</h2>
+                <p class="section-subtitle">Confira nossos produtos mais populares</p>
+            </div>
+            <div class="produtos-grid-destaque">
+                {% for produto in produtos_destaque %}
+                    <div class="produto-card-destaque">
+                        {% if produto.foto %}
+                            <div class="produto-imagem-destaque">
+                                <img src="{{ produto.foto.url }}" alt="{{ produto.nome }}">
+                            </div>
+                        {% else %}
+                            <div class="produto-imagem-destaque">
+                                <img src="{% static 'images/images.png' %}" alt="{{ produto.nome }}">
+                            </div>
+                        {% endif %}
+                        <div class="produto-info-destaque">
+                            <h3>{{ produto.nome }}</h3>
+                            <p class="produto-descricao-destaque">{{ produto.descricao|truncatewords:15 }}</p>
+                            <div class="produto-preco-destaque">
+                                <span class="preco-destaque">R$ {{ produto.preco|floatformat:2 }}</span>
+                            </div>
+                            <a href="{% url 'comprar' produto.id %}" class="btn-comprar-destaque">Comprar Agora</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="ver-todos">
+                <a href="{% url 'produtos' %}" class="btn-ver-todos">Ver Todos os Produtos</a>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Benefícios -->
+    <section class="beneficios-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Por que escolher nossa loja?</h2>
+                <p class="section-subtitle">Oferecemos o melhor em tecnologia e atendimento</p>
+            </div>
+            <div class="beneficios-grid">
+                <div class="beneficio-card">
+                    <div class="beneficio-icon">🚀</div>
+                    <h3>Entrega Rápida</h3>
+                    <p>Receba seus produtos com agilidade e segurança em todo o Brasil</p>
+                </div>
+                <div class="beneficio-card">
+                    <div class="beneficio-icon">💳</div>
+                    <h3>Pagamento Seguro</h3>
+                    <p>Diversas formas de pagamento com total segurança e confiança</p>
+                </div>
+                <div class="beneficio-card">
+                    <div class="beneficio-icon">🛡️</div>
+                    <h3>Garantia Total</h3>
+                    <p>Produtos com garantia de fábrica e suporte técnico especializado</p>
+                </div>
+                <div class="beneficio-card">
+                    <div class="beneficio-icon">⭐</div>
+                    <h3>Melhor Preço</h3>
+                    <p>Os melhores preços do mercado com condições especiais de pagamento</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sobre Resumido -->
+    {% if pagina %}
+    <section class="sobre-resumo-section">
+        <div class="container">
+            <div class="sobre-resumo-card">
+                <div class="sobre-resumo-content">
+                    {% if pagina.imagem_sobre %}
+                        <div class="sobre-resumo-imagem">
+                            <img src="{{ pagina.imagem_sobre.url }}" alt="Sobre nós">
+                        </div>
+                    {% else %}
+                        <div class="sobre-resumo-imagem">
+                            <img src="{% static 'images/images.png' %}" alt="Sobre nós">
+                        </div>
+                    {% endif %}
+                    <div class="sobre-resumo-texto">
+                        <h2>Sobre Nós</h2>
+                        <p>{{ pagina.texto_sobre|truncatewords:50|linebreaks }}</p>
+                        <a href="{% url 'sobre' %}" class="btn-secondary">Ler Mais</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Call to Action Final -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Pronto para encontrar o produto ideal?</h2>
+                <p>Explore nossa coleção completa de produtos eletrônicos</p>
+                <a href="{% url 'produtos' %}" class="btn-primary btn-large">Ver Catálogo Completo</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CSS e JavaScript do Carrossel -->
+    <style>
+        .carousel-section {
+            width: 100%;
+            margin-bottom: 0;
+        }
+        
+        .carousel-container {
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .carousel-wrapper {
+            position: relative;
+            width: 100%;
+            height: 700px;
+            overflow: hidden;
+            border-radius: 20px;
+        }
+        
+        .carousel-slides {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+            transform: scale(1.05);
+            z-index: 1;
+        }
+        
+        .carousel-slide.active {
+            opacity: 1;
+            transform: scale(1);
+            z-index: 2;
+        }
+        
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            border-radius: 20px;
+        }
+        
+        .carousel-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.85) 30%, rgba(0,0,0,0.7) 60%, transparent 100%);
+            color: white;
+            padding: 50px 40px 40px 40px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            box-sizing: border-box;
+            border-radius: 0 0 20px 20px;
+            transition: opacity 0.8s ease-in-out;
+            overflow: visible;
+        }
+        
+        .carousel-slide:not(.active) .carousel-caption {
+            opacity: 0;
+        }
+        
+        .carousel-caption h2 {
+            margin: 0 0 15px 0;
+            font-size: 2em;
+            font-weight: bold;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            line-height: 1.3;
+            max-width: 100%;
+            width: 100%;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        
+        .carousel-caption p {
+            margin: 0;
+            font-size: 1.2em;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            line-height: 1.6;
+            max-width: 100%;
+            width: 100%;
+            white-space: normal;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .carousel-btn:hover {
+            background: rgba(0, 0, 0, 0.9);
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .carousel-prev {
+            left: 20px;
+        }
+        
+        .carousel-next {
+            right: 20px;
+        }
+        
+        .carousel-indicators {
+            position: absolute;
+            bottom: 180px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+        
+        @media (max-width: 768px) {
+            .carousel-indicators {
+                bottom: 150px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .carousel-indicators {
+                bottom: 120px;
+            }
+        }
+        
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .indicator.active {
+            background: white;
+        }
+        
+        @media (max-width: 768px) {
+            .carousel-container {
+                border-radius: 15px;
+            }
+            
+            .carousel-wrapper {
+                height: 500px;
+                border-radius: 15px;
+            }
+            
+            .carousel-slide img {
+                border-radius: 15px;
+            }
+            
+            .carousel-caption {
+                padding: 35px 25px 30px 25px;
+                border-radius: 0 0 15px 15px;
+            }
+            
+            .carousel-caption h2 {
+                font-size: 1.5em;
+                margin-bottom: 12px;
+                padding: 0 15px;
+            }
+            
+            .carousel-caption p {
+                font-size: 1em;
+                line-height: 1.5;
+                padding: 0 15px;
+            }
+            
+            .carousel-btn {
+                width: 40px;
+                height: 40px;
+                padding: 0;
+                font-size: 18px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .carousel-container {
+                border-radius: 12px;
+            }
+            
+            .carousel-wrapper {
+                height: 400px;
+                border-radius: 12px;
+            }
+            
+            .carousel-slide img {
+                border-radius: 12px;
+            }
+            
+            .carousel-caption {
+                padding: 25px 20px 20px 20px;
+                border-radius: 0 0 12px 12px;
+            }
+            
+            .carousel-caption h2 {
+                font-size: 1.2em;
+                margin-bottom: 10px;
+                padding: 0 10px;
+                line-height: 1.2;
+            }
+            
+            .carousel-caption p {
+                font-size: 0.9em;
+                line-height: 1.4;
+                padding: 0 10px;
+            }
+            
+            .carousel-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+            }
+        }
+    </style>
+    
+    <script>
+        let currentSlide = 0;
+        let autoPlayInterval;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const indicators = document.querySelectorAll('.indicator');
+        const totalSlides = slides.length;
+        
+        function showSlide(index) {
+            // Remove active de todos os slides e indicadores
+            slides.forEach(slide => slide.classList.remove('active'));
+            indicators.forEach(indicator => indicator.classList.remove('active'));
+            
+            // Adiciona active no slide e indicador atual
+            if (slides[index]) {
+                slides[index].classList.add('active');
+            }
+            if (indicators[index]) {
+                indicators[index].classList.add('active');
+            }
+        }
+        
+        function changeSlide(direction) {
+            currentSlide += direction;
+            
+            if (currentSlide >= totalSlides) {
+                currentSlide = 0;
+            } else if (currentSlide < 0) {
+                currentSlide = totalSlides - 1;
+            }
+            
+            showSlide(currentSlide);
+            resetAutoPlay();
+        }
+        
+        function goToSlide(index) {
+            currentSlide = index;
+            showSlide(currentSlide);
+            resetAutoPlay();
+        }
+        
+        function resetAutoPlay() {
+            clearInterval(autoPlayInterval);
+            if (totalSlides > 1) {
+                autoPlayInterval = setInterval(() => {
+                    changeSlide(1);
+                }, 5000);
+            }
+        }
+        
+        // Auto-play do carrossel (muda a cada 5 segundos)
+        if (totalSlides > 1) {
+            resetAutoPlay();
+            
+            // Pausa o auto-play quando o mouse está sobre o carrossel
+            const carouselWrapper = document.querySelector('.carousel-wrapper');
+            if (carouselWrapper) {
+                carouselWrapper.addEventListener('mouseenter', () => {
+                    clearInterval(autoPlayInterval);
+                });
+                
+                carouselWrapper.addEventListener('mouseleave', () => {
+                    resetAutoPlay();
+                });
+            }
+        }
+    </script>
+{% endblock conteudo %}

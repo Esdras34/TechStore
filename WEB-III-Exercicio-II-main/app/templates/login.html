@@ -1,0 +1,55 @@
+{% extends "template.html" %}
+{% load static %}
+
+{% block titulo %}Login{% endblock titulo %}
+
+{% block conteudo %}
+    <section class="login-section">
+        <div class="login-container">
+            <div class="login-box">
+                <h1>Login</h1>
+                <p class="login-subtitle">Faça login para continuar comprando</p>
+                
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <form method="POST" class="login-form">
+                    {% csrf_token %}
+                    <div class="form-group {% if form.username.errors %}has-error{% endif %}">
+                        <label for="{{ form.username.id_for_label }}">Usuário:</label>
+                        {{ form.username }}
+                        {% if form.username.errors %}
+                            <span class="error">{{ form.username.errors }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group {% if form.password.errors %}has-error{% endif %}">
+                        <label for="{{ form.password.id_for_label }}">Senha:</label>
+                        {{ form.password }}
+                        {% if form.password.errors %}
+                            <span class="error">{{ form.password.errors }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    {% if form.non_field_errors %}
+                        <div class="error-message">
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+                    
+                    <button type="submit" class="btn-primary btn-login">Entrar</button>
+                </form>
+                
+                <div class="login-footer">
+                    <p>Não tem uma conta? <a href="{% url 'registro' %}">Cadastre-se aqui</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock conteudo %}
+

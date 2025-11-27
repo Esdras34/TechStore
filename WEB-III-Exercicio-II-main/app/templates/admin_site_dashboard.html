@@ -1,0 +1,80 @@
+{% extends "template.html" %}
+{% load static %}
+
+{% block titulo %}Dashboard Administrativo{% endblock titulo %}
+
+{% block conteudo %}
+    <section class="admin-dashboard">
+        <div class="dashboard-header">
+            <h1>Dashboard Administrativo</h1>
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <h3>Total de Pedidos</h3>
+                    <p class="stat-number">{{ total_pedidos }}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total de Mensagens</h3>
+                    <p class="stat-number">{{ total_contatos }}</p>
+                </div>
+            </div>
+            <a href="{% url 'admin_site_logout' %}" class="btn-secondary">Sair</a>
+        </div>
+
+        <div class="dashboard-content">
+            <!-- Seção de Pedidos -->
+            <div class="dashboard-section">
+                <h2>Pedidos Realizados</h2>
+                {% if pedidos %}
+                    <div class="items-list">
+                        {% for pedido in pedidos %}
+                            <div class="item-card">
+                                <div class="item-header">
+                                    <h3>Pedido #{{ pedido.id }}</h3>
+                                    <span class="item-date">{{ pedido.data|date:"d/m/Y H:i" }}</span>
+                                </div>
+                                <div class="item-details">
+                                    <p><strong>Usuário:</strong> {{ pedido.usuario.get_full_name|default:pedido.usuario.username }}</p>
+                                    <p><strong>E-mail:</strong> {{ pedido.usuario.email }}</p>
+                                    <p><strong>Produto:</strong> {{ pedido.produto.nome }}</p>
+                                    <p><strong>Quantidade:</strong> {{ pedido.quantidade }}</p>
+                                    <p><strong>Preço Unitário:</strong> R$ {{ pedido.produto.preco|floatformat:2 }}</p>
+                                    <p class="item-total"><strong>Total:</strong> R$ {{ pedido.total|floatformat:2 }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="no-items">Nenhum pedido realizado ainda.</p>
+                {% endif %}
+            </div>
+
+            <!-- Seção de Mensagens de Contato -->
+            <div class="dashboard-section">
+                <h2>Mensagens de Feedback</h2>
+                {% if contatos %}
+                    <div class="items-list">
+                        {% for contato in contatos %}
+                            <div class="item-card">
+                                <div class="item-header">
+                                    <h3>{{ contato.nome }}</h3>
+                                    <span class="item-date">{{ contato.criado_em|date:"d/m/Y H:i" }}</span>
+                                </div>
+                                <div class="item-details">
+                                    <p><strong>E-mail:</strong> <a href="mailto:{{ contato.email }}">{{ contato.email }}</a></p>
+                                    <p><strong>Mensagem:</strong></p>
+                                    <div class="message-content">
+                                        {{ contato.mensagem|linebreaks }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="no-items">Nenhuma mensagem recebida ainda.</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock conteudo %}
+
+

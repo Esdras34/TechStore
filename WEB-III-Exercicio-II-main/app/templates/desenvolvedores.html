@@ -1,0 +1,22 @@
+{% extends "template.html" %}
+
+{% block titulo %}Desenvolvedores{% endblock titulo %}
+
+{% block conteudo %}
+    <h1>Desenvolvedores</h1>
+    <section>
+        <a href="{% url 'salvarDev' %}">Adicionar Desenvolvedor</a>
+        <br><br>
+
+        {% for dev in desenvolvedores  %}
+            <p>Nome: {{dev.nome}}</p>
+            <p>Funcao: {{dev.funcao}} </P>
+            <p>descrição: {{dev.descricao}} </P>
+            <p>email: {{dev.email}} </P>
+
+            <a href="{% url 'editarDev' dev.id %}">Editar</a>
+            <a href="{% url 'excluirDev' dev.id %}">Excluir</a>
+            <br><br>
+        {% endfor %}
+    </section>
+{% endblock conteudo %}

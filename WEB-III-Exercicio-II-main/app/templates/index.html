@@ -1,0 +1,176 @@
+{% extends "template.html" %}
+{% load static %}
+
+{% block titulo %}{% if pagina %}{{ pagina.nome_do_site }}{% else %}Home{% endif %}{% endblock titulo %}
+
+{% block conteudo %}
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-container">
+            <div class="hero-content">
+                {% if pagina %}
+                    <div class="hero-text-content">
+                        <p class="hero-intro">{{ pagina.texto_chamada }}</p>
+                        
+                        <p class="hero-description">
+                            Aqui você encontra smartphones, notebooks, acessórios, smartwatches, fones, caixas de som, periféricos e muito mais, tudo selecionado com rigor para entregar a melhor experiência possível.
+                        </p>
+                        
+                        <div class="beneficios-lista">
+                            <h3 class="beneficios-titulo">Por que comprar conosco?</h3>
+                            <ul class="beneficios-items">
+                                <li>✓ Produtos 100% originais e com garantia</li>
+                                <li>✓ Preços competitivos e promoções exclusivas</li>
+                                <li>✓ Envio rápido para todo o Brasil</li>
+                                <li>✓ Atendimento humanizado e suporte especializado</li>
+                                <li>✓ Pagamentos seguros e diversas formas de pagamento</li>
+                            </ul>
+                        </div>
+                        
+                        <p class="hero-description">
+                            Tecnologia que transforma seu dia a dia. Acreditamos que a tecnologia deve facilitar sua vida. Por isso, oferecemos dispositivos modernos, de alta performance e com excelente custo-benefício — perfeitos para trabalho, estudos ou lazer. Explore nosso catálogo e descubra as melhores oportunidades para turbinar sua rotina com o que há de mais avançado no mundo dos eletrônicos.
+                        </p>
+                        
+                        <p class="hero-cta-text">Descubra os melhores produtos eletrônicos com tecnologia de ponta e os melhores preços do mercado.</p>
+                    </div>
+                    
+                    <div class="hero-buttons">
+                        <a href="{% url 'produtos' %}" class="btn-primary">Ver Produtos</a>
+                        <a href="{% url 'sobre' %}" class="btn-secondary">Saiba Mais</a>
+                    </div>
+                {% else %}
+                    <div class="hero-text-content">
+                        <p class="hero-intro">A melhor tecnologia, com o melhor preço. Bem-vindo à sua loja de eletrônicos, o lugar ideal para quem busca inovação, qualidade e segurança na hora de comprar.</p>
+                        
+                        <p class="hero-description">
+                            Aqui você encontra smartphones, notebooks, acessórios, smartwatches, fones, caixas de som, periféricos e muito mais, tudo selecionado com rigor para entregar a melhor experiência possível.
+                        </p>
+                        
+                        <div class="beneficios-lista">
+                            <h3 class="beneficios-titulo">Por que comprar conosco?</h3>
+                            <ul class="beneficios-items">
+                                <li>✓ Produtos 100% originais e com garantia</li>
+                                <li>✓ Preços competitivos e promoções exclusivas</li>
+                                <li>✓ Envio rápido para todo o Brasil</li>
+                                <li>✓ Atendimento humanizado e suporte especializado</li>
+                                <li>✓ Pagamentos seguros e diversas formas de pagamento</li>
+                            </ul>
+                        </div>
+                        
+                        <p class="hero-description">
+                            Tecnologia que transforma seu dia a dia. Acreditamos que a tecnologia deve facilitar sua vida. Por isso, oferecemos dispositivos modernos, de alta performance e com excelente custo-benefício — perfeitos para trabalho, estudos ou lazer. Explore nosso catálogo e descubra as melhores oportunidades para turbinar sua rotina com o que há de mais avançado no mundo dos eletrônicos.
+                        </p>
+                        
+                        <p class="hero-cta-text">Descubra os melhores produtos eletrônicos com tecnologia de ponta e os melhores preços do mercado.</p>
+                    </div>
+                    
+                    <div class="hero-buttons">
+                        <a href="{% url 'produtos' %}" class="btn-primary">Ver Produtos</a>
+                        <a href="{% url 'sobre' %}" class="btn-secondary">Saiba Mais</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Produtos em Destaque -->
+    {% if produtos_destaque %}
+    <section class="destaque-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Produtos em Destaque</h2>
+                <p class="section-subtitle">Confira nossos produtos mais populares</p>
+            </div>
+            <div class="produtos-grid-destaque">
+                {% for produto in produtos_destaque %}
+                    <div class="produto-card-destaque">
+                        {% if produto.foto %}
+                            <div class="produto-imagem-destaque">
+                                <img src="{{ produto.foto.url }}" alt="{{ produto.nome }}">
+                            </div>
+                        {% else %}
+                            <div class="produto-imagem-destaque">
+                                <img src="{% static 'images/images.png' %}" alt="{{ produto.nome }}">
+                            </div>
+                        {% endif %}
+                        <div class="produto-info-destaque">
+                            <h3>{{ produto.nome }}</h3>
+                            <p class="produto-descricao-destaque">{{ produto.descricao|truncatewords:15 }}</p>
+                            <div class="produto-preco-destaque">
+                                <span class="preco-destaque">R$ {{ produto.preco|floatformat:2 }}</span>
+                            </div>
+                            <a href="{% url 'comprar' produto.id %}" class="btn-comprar-destaque">Comprar Agora</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="ver-todos">
+                <a href="{% url 'produtos' %}" class="btn-ver-todos">Ver Todos os Produtos</a>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Benefícios -->
+    <section class="beneficios-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Por que escolher nossa loja?</h2>
+                <p class="section-subtitle">Oferecemos o melhor em tecnologia e atendimento</p>
+            </div>
+            <div class="beneficios-grid">
+                <div class="beneficio-card">
+                    <div class="beneficio-icon">🚀</div>
+                    <h3>Entrega Rápida</h3>
+                    <p>Receba seus produtos com agilidade e segurança em todo o Brasil</p>
+                </div>
+                <div class="beneficio-card">
+                    <div class="beneficio-icon">💳</div>
+                    <h3>Pagamento Seguro</h3>
+                    <p>Diversas formas de pagamento com total segurança e confiança</p>
+                </div>
+                <div class="beneficio-card">
+                    <div class="beneficio-icon">🛡️</div>
+                    <h3>Garantia Total</h3>
+                    <p>Produtos com garantia de fábrica e suporte técnico especializado</p>
+                </div>
+                <div class="beneficio-card">
+                    <div class="beneficio-icon">⭐</div>
+                    <h3>Melhor Preço</h3>
+                    <p>Os melhores preços do mercado com condições especiais de pagamento</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sobre Resumido -->
+    {% if pagina %}
+    <section class="sobre-resumo-section">
+        <div class="container">
+            <div class="sobre-resumo-content">
+                {% if pagina.imagem_sobre %}
+                    <div class="sobre-resumo-imagem">
+                        <img src="{{ pagina.imagem_sobre.url }}" alt="Sobre nós">
+                    </div>
+                {% endif %}
+                <div class="sobre-resumo-texto">
+                    <h2>Sobre Nós</h2>
+                    <p>{{ pagina.texto_sobre|truncatewords:50|linebreaks }}</p>
+                    <a href="{% url 'sobre' %}" class="btn-secondary">Ler Mais</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Call to Action Final -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Pronto para encontrar o produto ideal?</h2>
+                <p>Explore nossa coleção completa de produtos eletrônicos</p>
+                <a href="{% url 'produtos' %}" class="btn-primary btn-large">Ver Catálogo Completo</a>
+            </div>
+        </div>
+    </section>
+{% endblock conteudo %}

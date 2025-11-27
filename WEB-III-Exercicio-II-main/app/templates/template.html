@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %} {% endblock %} </title>
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}?v=2.0">
+</head>
+<body>
+    {% if messages %}
+        {% for msg in messages %}
+            <p>{{ msg}}</p>
+        {% endfor %}
+    {% endif %}
+    <header>
+        <div id="title">
+            {% if pagina and pagina.logo_do_site %}
+                <img src="{{ pagina.logo_do_site.url }}" alt="Logo">
+            {% else %}
+                <img src="{% static 'images/images.png' %}" alt="Logo">
+            {% endif %}
+            <h1>{% if pagina %}{{ pagina.nome_do_site }}{% else %}Framework Django{% endif %}</h1>
+        </div>
+        <nav>
+            <a href="{% url 'index' %}">Home</a>
+            <a href="{% url 'sobre' %}">Sobre</a>
+            <a href="{% url 'produtos' %}">Produtos</a>
+            <a href="{% url 'contato' %}">Contato</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'perfil' %}">Perfil ({{ user.username }})</a>
+                <a href="{% url 'logout' %}">Sair</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+            {% endif %}
+        </nav>
+    </header>
+    <main>
+        {% block conteudo %}
+        {% endblock %}
+    </main>
+    <footer>
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>{% if pagina %}{{ pagina.nome_do_site }}{% else %}Loja de Eletrônicos{% endif %}</h3>
+                    <p>Sua loja de confiança para produtos eletrônicos de qualidade.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Links Rápidos</h4>
+                    <ul>
+                        <li><a href="{% url 'index' %}">Home</a></li>
+                        <li><a href="{% url 'sobre' %}">Sobre</a></li>
+                        <li><a href="{% url 'produtos' %}">Produtos</a></li>
+                        <li><a href="{% url 'contato' %}">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    {% if pagina %}
+                        <p><strong>Endereço:</strong> {{ pagina.endereco }}</p>
+                        <p><strong>E-mail:</strong> <a href="mailto:{{ pagina.email }}">{{ pagina.email }}</a></p>
+                        <p><strong>WhatsApp:</strong> <a href="https://wa.me/{{ pagina.whatsapp }}" target="_blank">{{ pagina.whatsapp }}</a></p>
+                    {% else %}
+                        <p>Entre em contato conosco</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; {% now "Y" %} {% if pagina %}{{ pagina.nome_do_site }}{% else %}Loja de Eletrônicos{% endif %}. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

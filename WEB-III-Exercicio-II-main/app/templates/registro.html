@@ -1,0 +1,89 @@
+{% extends "template.html" %}
+{% load static %}
+
+{% block titulo %}Cadastro{% endblock titulo %}
+
+{% block conteudo %}
+    <section class="login-section">
+        <div class="login-container">
+            <div class="login-box">
+                <h1>Criar Conta</h1>
+                <p class="login-subtitle">Cadastre-se para fazer compras em nossa loja</p>
+                
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <form method="POST" class="login-form">
+                    {% csrf_token %}
+                    <div class="form-group {% if form.username.errors %}has-error{% endif %}">
+                        <label for="{{ form.username.id_for_label }}">Usuário:</label>
+                        {{ form.username }}
+                        {% if form.username.errors %}
+                            <span class="error">{{ form.username.errors }}</span>
+                        {% endif %}
+                        <small class="form-help">Obrigatório. 150 caracteres ou menos. Letras, números e @/./+/-/_ apenas.</small>
+                    </div>
+                    
+                    <div class="form-group {% if form.first_name.errors %}has-error{% endif %}">
+                        <label for="{{ form.first_name.id_for_label }}">Nome:</label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                            <span class="error">{{ form.first_name.errors }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group {% if form.last_name.errors %}has-error{% endif %}">
+                        <label for="{{ form.last_name.id_for_label }}">Sobrenome:</label>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                            <span class="error">{{ form.last_name.errors }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group {% if form.email.errors %}has-error{% endif %}">
+                        <label for="{{ form.email.id_for_label }}">E-mail:</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <span class="error">{{ form.email.errors }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group {% if form.password1.errors %}has-error{% endif %}">
+                        <label for="{{ form.password1.id_for_label }}">Senha:</label>
+                        {{ form.password1 }}
+                        {% if form.password1.errors %}
+                            <span class="error">{{ form.password1.errors }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group {% if form.password2.errors %}has-error{% endif %}">
+                        <label for="{{ form.password2.id_for_label }}">Confirmar Senha:</label>
+                        {{ form.password2 }}
+                        {% if form.password2.errors %}
+                            <span class="error">{{ form.password2.errors }}</span>
+                        {% endif %}
+                        <small class="form-help">Digite a mesma senha novamente para verificação.</small>
+                    </div>
+                    
+                    {% if form.non_field_errors %}
+                        <div class="error-message">
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+                    
+                    <button type="submit" class="btn-primary btn-login">Criar Conta</button>
+                </form>
+                
+                <div class="login-footer">
+                    <p>Já tem uma conta? <a href="{% url 'login' %}">Fazer login</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock conteudo %}
+
