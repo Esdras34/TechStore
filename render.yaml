@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: WEB-III-Exercicio-II-main
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn projeto.wsgi:application
+    autoDeploy: true
+    envVars:
+      - key: DEBUG
+        value: False
+      - key: SECRET_KEY
+        value: sua-chave-secreta-aqui
